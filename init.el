@@ -123,7 +123,7 @@ values."
 					spaceline holy-mode skewer-mode rainbow-delimiters
 					highlight-indentation vi-tilde-fringe eyebrowse
 					org-bullets smooth-scrolling
-					livid-mode git-gutter git-gutter-fringe  evil-escape
+					livid-mode git-gutter git-gutter-fringe
 					leuven-theme gh-md evil-lisp-state spray lorem-ipsum symon
 					ac-ispell ace-jump-mode auto-complete auto-dictionary
 					clang-format define-word google-translate disaster epic
@@ -392,15 +392,24 @@ before packages are loaded. If you are unsure, you should try in setting them in
   )
 
 (defun dotspacemacs/user-config ()
+  ;; custom file
   (setq custom-file (expand-file-name "custom.el" dotspacemacs-directory))
   (load custom-file 'no-error 'no-message)
+  ;; evil escape
+  (setq-default evil-escape-key-sequence "nj")
+  (setq-default evil-escape-delay 0.2)
+  ;; 关闭翻页
+  (setq scroll-step 1
+        scroll-margin 3
+        scroll-conservatively 10000)
+
   "Configuration function for user code.
 This function is called at the very end of Spacemacs initialization after
 layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
-  )
+    )
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
@@ -460,28 +469,6 @@ you should place your code here."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;; zhan configuration ;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;;(setq custom-file (expand-file-name "custom.el" dotspacemacs-directory))
-;;(load custom-file 'no-error 'no-message)
-
-;; 关闭翻页
-(setq scroll-step 1
-      scroll-margin 3
-      scroll-conservatively 10000)
-
-;; 关闭 evil insert 下的映射
-;;(setcdr evil-insert-state-map nil)
-;;(define-key evil-insert-state-map
-;; [escape] 'evil-normal-state
-;;  )
-
-(with-eval-after-load 'company
-  (define-key company-active-map (kbd "M-n") nil)
-  (define-key company-active-map (kbd "M-p") nil)
-  (define-key company-active-map (kbd "C-n") #'company-select-next)
-  (define-key company-active-map (kbd "C-p") #'company-select-previous)
-  )
-
 ;; golang config
 ;;(require 'go-mode)
 
@@ -510,13 +497,14 @@ you should place your code here."
 ;;          (goto-char (nth 1 p)))))
 
 
-(setq custom-file (expand-file-name "custom.el" dotspacemacs-directory))
-(load custom-file 'no-error 'no-message)
+;;(setq custom-file (expand-file-name "custom.el" dotspacemacs-directory))
+;;(load custom-file 'no-error 'no-message)
+
 (defun dotspacemacs/emacs-custom-settings ()
 	"Emacs custom settings.
 	This is an auto-generated function, do not modify its content directly,
 		use Emacs customize menu instead.
-	this function is called at the very end of Spacemacs initialization" 
+	this function is called at the very end of Spacemacs initialization"
  )
 
 ;;;;;;;;;;;;;;;;;;;; End zhan configuration ;;;;;;;;;;;;;;;;;;;;;;
