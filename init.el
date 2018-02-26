@@ -37,9 +37,9 @@ values."
      ;; ----------------------------------------------------------------
    '(
      (han :variables
-           han-enable-youdao-dict t
-           han-enable-fcitx t
-           han-org-line-spacing 0.2)
+          han-enable-youdao-dict t
+          han-enable-fcitx t
+          han-org-line-spacing 0.2)
      ansible
      ;; dockerfile
      rst
@@ -111,7 +111,15 @@ values."
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
-   dotspacemacs-additional-packages '(sicp)
+   dotspacemacs-additional-packages
+   '(
+     sicp
+     lsp-mode
+     (cquery :variables
+             cquery-executable "/home/zhan/.local/bin/cquery"
+             cquery-extra-init-params '(:index (:comments 2) :cacheFormat "msgpack" :completion (:detailedLabel t))
+             )
+     )
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
@@ -202,6 +210,7 @@ values."
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
    dotspacemacs-themes '(
+                         flatland
                          monokai
                          solarized-dark
                          spacemacs-dark
@@ -378,11 +387,9 @@ values."
 
 (defun dotspacemacs/user-init ()
 	(setq configuration-layer--elpa-archives
-        '(
-          ("melpa-qing" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")
-          ;;("melpa-cn" . "http://elpa.emacs-china.org/melpa/")
-          ("org-cn"  . "http://elpa.emacs-china.org/org/")
-          ("gnu-cn"  . "http://elpa.emacs-china.org/gnu/")))
+	 '(("melpa-cn" . "http://elpa.emacs-china.org/melpa/")
+		("org-cn"  . "http://elpa.emacs-china.org/org/")
+		("gnu-cn"  . "http://elpa.emacs-china.org/gnu/")))
   "Initialization function for user code.
 It is called immediately after `dotspacemacs/init', before layer configuration
 executes.
@@ -392,24 +399,31 @@ before packages are loaded. If you are unsure, you should try in setting them in
   )
 
 (defun dotspacemacs/user-config ()
-  ;; custom file
-  (setq custom-file (expand-file-name "custom.el" dotspacemacs-directory))
-  (load custom-file 'no-error 'no-message)
+  ;; cquery
+  ;;(setq cquery-executable "/home/zhan/.local/bin/cquery")
+  ;;(setq cquery-extra-init-params '(:index (:comments 2) :cacheFormat "msgpack" :completion (:detailedLabel t)))
+
+  ;; 特殊字体
+  ;;(spacemacs//set-monospaced-font "Source Code Pro" "BabelStone Han" 14 16)
+
   ;; evil escape
   (setq-default evil-escape-key-sequence "nj")
   (setq-default evil-escape-delay 0.2)
+
   ;; 关闭翻页
   (setq scroll-step 1
         scroll-margin 3
         scroll-conservatively 10000)
 
+  (setq custom-file (expand-file-name "custom.el" dotspacemacs-directory))
+  (load custom-file 'no-error 'no-message)
   "Configuration function for user code.
 This function is called at the very end of Spacemacs initialization after
 layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
-    )
+  )
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
@@ -420,46 +434,7 @@ you should place your code here."
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (yapfify yaml-mode xterm-color web-mode web-beautify tide typescript-mode
-	tagedit slim-mode shell-pop scss-mode sass-mode reveal-in-osx-finder
-	ranger rainbow-mode rainbow-identifiers racket-mode faceup pyvenv pytest
-	pyenv-mode py-isort pug-mode prodigy pip-requirements pbcopy
-	osx-trash osx-dictionary ob-restclient ob-http multi-term lua-mode
-	livid-mode skewer-mode simple-httpd live-py-mode less-css-mode
-	launchctl json-mode json-snatcher json-reformat js2-refactor js2-mode js-doc
-	ibuffer-projectile hy-mode haml-mode graphviz-dot-mode ggtags
-	eshell-z eshell-prompt-extras esh-help engine-mode emmet-mode
-	disaster deft cython-mode company-web web-completion-data company-tern
-	dash-functional tern company-restclient restclient know-your-http-well
-	company-c-headers company-auctex company-anaconda color-identifiers-mode
-	coffee-mode cmake-mode clojure-snippets clj-refactor inflections edn
-	multiple-cursors paredit peg clang-format cider-eval-sexp-fu cider seq
-	queue clojure-mode auctex anaconda-mode pythonic unfill smeargle
-	orgit org-projectile org-category-capture org-present org-pomodoro
-	alert log4e gntp org-download mwim magit-gitflow htmlize gnuplot gitignore-mode
-	gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link
-	flyspell-correct-ivy flyspell-correct evil-magit magit magit-popup
-	git-commit ghub let-alist with-editor auto-dictionary mmm-mode
-	markdown-toc markdown-mode gh-md fuzzy flycheck-pos-tip pos-tip flycheck
-	company-statistics company-go company auto-yasnippet yasnippet ac-ispell
-	auto-complete go-guru go-eldoc go-mode ws-butler winum which-key wgrep
-	volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline
-	powerline smex restart-emacs request rainbow-delimiters popwin persp-mode
-	pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree
-	move-text macrostep lorem-ipsum linum-relative link-hint ivy-hydra
-	info+ indent-guide hydra hungry-delete hl-todo highlight-parentheses
-	highlight-numbers parent-mode highlight-indentation hide-comnt
-	help-fns+ helm-make helm helm-core google-translate golden-ratio flx-ido flx
-	fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell
-	evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor
-	evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter
-	evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus
-	evil-iedit-state iedit evil-exchange evil-escape evil-ediff
-	evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu
-	highlight elisp-slime-nav dumb-jump popup f dash s diminish define-word
-	counsel-projectile projectile pkg-info epl counsel swiper ivy
-	column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol
-	auto-compile packed async aggressive-indent adaptive-wrap ace-window ace-link avy))))
+    (cquery lsp-mode youdao-dictionary names chinese-word-at-point visual-fill-column sql-indent pyim pyim-basedict pangu-spacing org-cliplink jinja2-mode intero hlint-refactor hindent haskell-snippets flycheck-haskell find-by-pinyin-dired fcitx company-ghci company-ghc ghc haskell-mode company-cabal company-ansible cmm-mode avy-zap ansible-doc ansible ace-pinyin pinyinlib yapfify yaml-mode xterm-color web-mode web-beautify tide typescript-mode tagedit slim-mode shell-pop scss-mode sass-mode reveal-in-osx-finder ranger rainbow-mode rainbow-identifiers racket-mode faceup pyvenv pytest pyenv-mode py-isort pug-mode prodigy pip-requirements pbcopy osx-trash osx-dictionary ob-restclient ob-http multi-term lua-mode livid-mode skewer-mode simple-httpd live-py-mode less-css-mode launchctl json-mode json-snatcher json-reformat js2-refactor js2-mode js-doc ibuffer-projectile hy-mode haml-mode graphviz-dot-mode ggtags eshell-z eshell-prompt-extras esh-help engine-mode emmet-mode disaster deft cython-mode company-web web-completion-data company-tern dash-functional tern company-restclient restclient know-your-http-well company-c-headers company-auctex company-anaconda color-identifiers-mode coffee-mode cmake-mode clojure-snippets clj-refactor inflections edn multiple-cursors paredit peg clang-format cider-eval-sexp-fu cider seq queue clojure-mode auctex anaconda-mode pythonic unfill smeargle orgit org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-download mwim magit-gitflow htmlize gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link flyspell-correct-ivy flyspell-correct evil-magit magit magit-popup git-commit ghub let-alist with-editor auto-dictionary mmm-mode markdown-toc markdown-mode gh-md fuzzy flycheck-pos-tip pos-tip flycheck company-statistics company-go company auto-yasnippet yasnippet ac-ispell auto-complete go-guru go-eldoc go-mode ws-butler winum which-key wgrep volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline smex restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint ivy-hydra info+ indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-make helm helm-core google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav dumb-jump popup f dash s diminish define-word counsel-projectile projectile pkg-info epl counsel swiper ivy column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed async aggressive-indent adaptive-wrap ace-window ace-link avy))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -469,6 +444,23 @@ you should place your code here."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;; zhan configuration ;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;(setq custom-file (expand-file-name "custom.el" dotspacemacs-directory))
+;;(load custom-file 'no-error 'no-message)
+
+;; 关闭 evil insert 下的映射
+;;(setcdr evil-insert-state-map nil)
+;;(define-key evil-insert-state-map
+;; [escape] 'evil-normal-state
+;;  )
+
+;;(with-eval-after-load 'company
+;;  (define-key company-active-map (kbd "M-n") nil)
+;;  (define-key company-active-map (kbd "M-p") nil)
+;;  (define-key company-active-map (kbd "C-n") #'company-select-next)
+;;  (define-key company-active-map (kbd "C-p") #'company-select-previous)
+;;  )
+
 ;; golang config
 ;;(require 'go-mode)
 
@@ -497,14 +489,13 @@ you should place your code here."
 ;;          (goto-char (nth 1 p)))))
 
 
-;;(setq custom-file (expand-file-name "custom.el" dotspacemacs-directory))
-;;(load custom-file 'no-error 'no-message)
-
+;; (setq custom-file (expand-file-name "custom.el" dotspacemacs-directory))
+;; (load custom-file 'no-error 'no-message)
 (defun dotspacemacs/emacs-custom-settings ()
 	"Emacs custom settings.
 	This is an auto-generated function, do not modify its content directly,
 		use Emacs customize menu instead.
-	this function is called at the very end of Spacemacs initialization"
+	this function is called at the very end of Spacemacs initialization" 
  )
 
 ;;;;;;;;;;;;;;;;;;;; End zhan configuration ;;;;;;;;;;;;;;;;;;;;;;
